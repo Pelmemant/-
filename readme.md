@@ -27,26 +27,26 @@
 
     Запуск тренировки модели: Поместите ваш файл имена.csv в директорию проекта и запустите скрипт: bash python main.py
 
-Пример Использования
+Пример Использования.
 
 После обучения модели, вы можете сгенерировать новое имя следующим образом:
-Pytorch:
-      word1 = "Первое слово"
-      word2 = "Второе слово"
-      gender = "Пол"
-      try:
-          generated_name = generate_name(word1, word2, gender, model, dataset)
-          print(f'Сгенерированное имя: {generated_name}')
-Tensorflow:
-      word1 = "Первое слово"
-      word2 = "Второе слово"
-      gender = "Пол"
-      try:
-          generated_name = generate_name(word1, word2, gender, model, word_to_idx, gender_to_idx, idx_to_name)
-          print(f'Сгенерированное имя: {generated_name}')
-Sklern
-      word1 = "Первое слово"
-      word2 = "Второе слово"
-      gender = "Пол"
-      predicted_name = predict_name(word1, word2, gender)
-      print(f'Предсказанное имя: {predicted_name}')
+    Pytorch:
+          word1 = "Первое слово"
+          word2 = "Второе слово"
+          gender = "Пол"
+          try:
+              generated_name = generate_name(word1, word2, gender, model, dataset)
+              print(f'Сгенерированное имя: {generated_name}')
+    Tensorflow:
+          word1 = "Первое слово"
+          word2 = "Второе слово"
+          gender = "Пол"
+          try:
+              generated_name = generate_name(word1, word2, gender, model, word_to_idx, gender_to_idx, idx_to_name)
+              print(f'Сгенерированное имя: {generated_name}')
+    Sklern
+          word1 = "Первое слово"
+          word2 = "Второе слово"
+          gender = "Пол"
+          predicted_name = predict_name(word1, word2, gender)
+          print(f'Предсказанное имя: {predicted_name}')
