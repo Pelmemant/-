@@ -5,6 +5,7 @@
 !Важно!
 В таблице имена.csv должно присутвовать хотя бы одно имя образованное из каждого слова.
 
+
 Структура Данных:
 
     Таблица имена.csv должна содержать следующие столбцы:
@@ -32,15 +33,20 @@
 Pytorch:
       word1 = "Первое слово"
       word2 = "Второе слово"
-      generated_name = generate_name(word1, word2, model, dataset)
-      print(f'Сгенерированное имя: {generated_name}')
+      gender = "Пол"
+      try:
+          generated_name = generate_name(word1, word2, gender, model, dataset)
+          print(f'Сгенерированное имя: {generated_name}')
 Tensorflow:
       word1 = "Первое слово"
       word2 = "Второе слово"
-      generated_name = generate_name(word1, word2)
-      print(f'Сгенерированное имя из слов "{word1}" и "{word2}": "{generated_name}"')
+      gender = "Пол"
+      try:
+          generated_name = generate_name(word1, word2, gender, model, word_to_idx, gender_to_idx, idx_to_name)
+          print(f'Сгенерированное имя: {generated_name}')
 Sklern
       word1 = "Первое слово"
       word2 = "Второе слово"
-      generated_name = generate_name(word1, word2, model, vectorizer)
-      print(f'Сгенерированное имя: {generated_name}')
+      gender = "Пол"
+      predicted_name = predict_name(word1, word2, gender)
+      print(f'Предсказанное имя: {predicted_name}')
