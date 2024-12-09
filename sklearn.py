@@ -1,43 +1,62 @@
 import pandas as pd
+import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LogisticRegression
-from sklearn.multiclass import OneVsRestClassifier
-from sklearn.preprocessing import MultiLabelBinarizer, LabelEncoder
 
-# Чтение данных из CSV-файла
-df = pd.read_csv('имена.csv', encoding='utf-8')
+# Чтение данных из CSV файла
+try:
+    df = pd.read_csv('имена.csv')
 
-# Подготовка данных
-X = df[['Составляющее 1', 'Составляющее 2']].astype(str).values
-y_gender = df['Пол'].values
-y_parts = df[['Составляющее 1', 'Составляющее 2']].astype(str).values
+    # Проверка данных на наличие пропусков
+    print("Проверка данных на наличие пропусков:")
+    print(df.isnull().sum())
 
-# Токенизация и векторизация
-mlb = MultiLabelBinarizer()
-X_encoded = mlb.fit_transform(X)
+    # Заполнение пропусков стабильно выбранными значениями
+    df.fillna('', inplace=True)
 
-le = LabelEncoder()
-y_gender_encoded = le.fit_transform(y_gender)
+    # Убедимся, что целевая переменная не содержит отсутствующих значений
+    df = df[df['Имя'] != '']
 
-# Бинаризация многозначных меток y_parts
-y_parts_binarized = mlb.fit_transform(y_parts)
+    # Создание нового столбца с объединением слов
+    df['combined'] = df['Составляющее 1'] + ' ' + df['Составляющее 2']
 
-# Разделение данных на тренировочный и тестовый наборы
-X_train, X_test, y_train_gender, y_test_gender, y_train_parts, y_test_parts = train_test_split(X_encoded, y_gender_encoded, y_parts_binarized, test_size=0.2, random_state=42)
+   
 
-# Создание моделей
-clf_gender = LogisticRegression(random_state=0)
-clf_gender.fit(X_train, y_train_gender)
+    # Подготовка данных для обучения
+    X = df['combined'].astype(str)
+    y = df['Имя'].astype(str)
 
-clf_parts = OneVsRestClassifier(LogisticRegression())
-clf_parts.fit(X_train, y_train_parts)
+    # Разделение данных на обучающий и тестовый наборы
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# Оценка моделей
-y_pred_gender = clf_gender.predict(X_test)
-accuracy_gender = (y_pred_gender == y_test_gender).mean() * 100
-print(f"Точность модели для определения пола: {accuracy_gender:.2f}%")
+    # Преобразование текстовых данных в числовые признаки
+    vectorizer = CountVectorizer()
+    X_train_vec = vectorizer.fit_transform(X_train)
+    X_test_vec = vectorizer.transform(X_test)
 
-y_pred_parts = clf_parts.predict(X_test)
-accuracy_parts = (y_pred_parts == y_test_parts).mean(axis=0).mean() * 100
-print(f"Точность модели для определения частей имени: {accuracy_parts:.2f}%")
+    # Создание и обучение модели
+    model = KNeighborsClassifier(n_neighbors=5)
+    model.fit(X_train_vec, y_train)
+
+    # Оценка модели
+    y_pred = model.predict(X_test_vec)
+    accuracy = accuracy_score(y_test, y_pred)
+    print(f'Точность: {accuracy:.2f}')
+
+    # Функция для генерации нового имени
+    def generate_name(word1, word2, model, vectorizer):
+        combined_input = word1 + ' ' + word2
+        input_vec = vectorizer.transform([combined_input])
+        predicted_name = model.predict(input_vec)
+        return predicted_name[0]
+
+    # Пример использования
+    word1 = "Владеть"
+    word2 = "Мир"
+    generated_name = generate_name(word1, word2, model, vectorizer)
+    print(f'Сгенерированное имя: {generated_name}')
+
+except Exception as e:
+    print(f"Произошла ошибка: {e}")
