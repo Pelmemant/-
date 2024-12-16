@@ -39,6 +39,9 @@
           try:
               generated_name = generate_name(word1, word2, gender, model, dataset)
               print(f'Сгенерированное имя: {generated_name}')
+          ![pytorch](https://github.com/user-attachments/assets/17a8ccf5-7d58-4643-be14-1f9cb69ed0fc)
+
+
     Tensorflow:
     
           word1 = "Первое слово"
@@ -47,6 +50,9 @@
           try:
               generated_name = generate_name(word1, word2, gender, model, word_to_idx, gender_to_idx, idx_to_name)
               print(f'Сгенерированное имя: {generated_name}')
+          ![tensorflow](https://github.com/user-attachments/assets/30d9adb1-4cb5-4865-928e-251ce1aed01e)
+
+          
     Sklern
     
           word1 = "Первое слово"
@@ -54,3 +60,4 @@
           gender = "Пол"
           predicted_name = predict_name(word1, word2, gender)
           print(f'Предсказанное имя: {predicted_name}')
+          ![1](https://github.com/user-attachments/assets/a63b755f-64a2-4cad-9ba7-6201a77c77b5)
